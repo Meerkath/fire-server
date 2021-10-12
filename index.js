@@ -6,7 +6,7 @@ const app = express();
 
 
 // Int middleware 
-// app.use(logger);
+app.use(logger);
 // gets all members
 app.get('/api/members', (req,res) => {res.json(members);})
 
@@ -18,7 +18,6 @@ app.get('/api/members/:id',(req, res) => {
   } else {
     res.status(400).json({ msg: `No member with the id of ${req.params.id}.` });
   }
-  
 });
 
 // Set static folder
