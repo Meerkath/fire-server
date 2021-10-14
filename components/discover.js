@@ -1,6 +1,6 @@
 var request = require('request');
-
-var cseUri = "http://192.168.143.151:8080/~/in-cse/?fu=1";
+base = 'http://192.168.143.151:8080/~/in-cse/?fu=1'
+var cseUri = "http://192.168.143.151:8080/~/in-cse/in-name/TEST/?fu=1";
 let options = {
   method:"GET",
   uri: cseUri,
@@ -12,7 +12,7 @@ let options = {
 
 module.exports = () => {
   request(options, function(error, res, body){
-    console.log(res);
-    return res
+    console.log(res.body);
+    return res.body;
   });
 }
