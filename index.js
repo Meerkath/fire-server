@@ -1,28 +1,20 @@
-const express = require('express');
-const members = require('./Members')
-const path = require('path');
-const logger = require('./middleware/logger')
-const app = express();
+var express = require('express');
+var path = require('path');
+var bodyParser = require('body-parser');
+var app = express();
+var discover = require('./components/discover')
 
-
-// Int middleware 
-app.use(logger);
-// gets all members
-app.get('/api/members', (req,res) => {res.json(members);})
-
-// Get single Member
-app.get('/api/members/:id',(req, res) => {
-  const found = members.some(member => member.id === parseInt(req.params.id));
-  if(found){
-    res.json(members.filter(member => member.id === parseInt(req.params.id)))
-  } else {
-    res.status(400).json({ msg: `No member with the id of ${req.params.id}.` });
-  }
+app.use(bodyParser.json());
+app.listen(5000, function () {
 });
 
-// Set static folder
-app.use(express.static(path.join(__dirname, 'public')))
+console.log(discover);
 
-const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.get('/feux', function(req, res) {
+  res.send({
+    id: 100,
+    center:'43.61557052155855, 7.075852075580969',
+    color:'red'
+  });
+});
