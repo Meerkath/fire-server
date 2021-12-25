@@ -9,12 +9,11 @@ const authenticateToken = (req, res, next) => {
   if (!token) {
     return res.sendStatus(401);
   }
-
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
-      res.sendStatus(401);
+      return res.sendStatus(401);
     }
-    req.body = data;
+    req.body = Object.assign(req.body, user);
     next();
   })
 }
@@ -42,7 +41,7 @@ const refreshToken = (req, res) => {
 
 
 const generateAccessToken = (user) => {
-  return jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1800s'});
+  return jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1y'});
 } 
 
 const generateRefreshToken = (user) => {

@@ -90,8 +90,39 @@ const login = (req, res) => {
   );
 }
 
+const isFriend = (req, res, next) => {
+  HasFriend.findOne(
+    {
+      $or:
+      [ 
+        { 
+          $and: 
+          [ 
+            { userId: new ObjectId(req.body.user._id) }, 
+            { friendWith: new ObjectId(req.params.userId) } 
+          ]
+        },
+        {
+          $and: 
+          [
+            { friendWith: new ObjectId(req.body.user._id) },
+            { userId: new ObjectId(req.params.userId) }
+          ]
+        } 
+      ]
+    }
+    ).then((hasFriend) => {
+      if(!hasFriend){
+        res.sendStatus(403);
+        return;
+      }
+      next();
+    });
+}
+
 module.exports = {
   getFriends,
   createUser,
-  login
+  login,
+  isFriend
 }
