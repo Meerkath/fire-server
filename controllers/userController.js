@@ -7,12 +7,21 @@ const auth = require("./auth");
 require('dotenv').config();
 
 const getFriends = (req, res) => {
-  HasFriend.find({ userId: new ObjectId(req.body.user._id) }, (err, hasFriendList) => {
+  HasFriend.find({
+      $or:
+      [ 
+        { userId: new ObjectId(req.body.user._id) },
+        { friendWith: new ObjectId(req.body.user._id) } 
+      ]
+    }, (err, hasFriendList) => {
     if (err)
       throw new Error(err);
     const friendsIdList = [];
     hasFriendList.forEach(el => {
-      friendsIdList.push(el.friendWith);
+      if(el.friendWith.toString() === req.body.user._id)
+        friendsIdList.push(el.userId)
+      else
+        friendsIdList.push(el.friendWith);
     });
     User.find({_id: { $in: friendsIdList }}, { password: 0 }, (err, friends) => {
       if (err)

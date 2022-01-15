@@ -5,7 +5,9 @@ const MessageSchema = new mongoose.Schema({
   _id: ObjectId,
   content: String,
   recipientId: ObjectId,
-  senderId: ObjectId
+  senderId: ObjectId,
+  read: Boolean,
+  date: Date
 });
 const Message = mongoose.model('message', MessageSchema);
 

@@ -27,7 +27,7 @@ async function main(){
     console.log("OK - Successfully connected to database.");
   else
     console.error("ERR - Failed to connect to database.");
-  app.listen(process.env.PORT, function () {
+  app.listen(process.env.PORT, () => {
     console.log(`OK - Server started on port ${process.env.PORT}.`);
   });
 }
